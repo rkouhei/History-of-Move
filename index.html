@@ -17,11 +17,12 @@
         <link rel="stylesheet" href="src/css/main.css">
     </head>
     <body>
-        <div id="mapid"></div>
+        <div id="csv" style="display: inline-flex">
+            <div id="mapid"></div>
+            <form method="post" action="example.cgi" enctype="multipart/form-data">
+                <input type="file">
+            </form>
+        </div>
         <script src="src/js/index.js"></script>
-        <form method="post" action="example.cgi" enctype="multipart/form-data">
-            <input type="file">
-        </form>
-        <!-- <script src="bundle.js" charset="utf-8"></script> -->
     </body>
 </html>
