@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 const csv = require('csv-parser/')
 dotenv.config()
 
+// 日付表示
 function datadisplay(results) {
     let text = results[0]['time']
     text = text.split(' ')
@@ -17,6 +18,7 @@ function datadisplay(results) {
     }
 }
 
+// ボタンクリック時の動作
 document.getElementById('btn').onclick = function() {
     if (results.length === 0) {
         let element = document.createElement('p') // 挿入するタグ
@@ -25,27 +27,35 @@ document.getElementById('btn').onclick = function() {
         inspos.appendChild(element)
     } else {
         markpos(results)
-        L.polyline([
-            [pointlat,pointlon],
-            [34.32722622932206, 134.05597578837197]
-        ],{
-            "color": "#FF0000",
-            "weight": 5,
-            "opacity": 0.6
-        }).addTo(mymap);
+        markroute(results)
     }
 }
 
+// マーカーを打つ
 function markpos(results) {
     for (let i = 0; i < results.length; i++) {
         L.marker([results[i]['latitude'], results[i]['longitude']]).addTo(mymap)
         let text = results[i]['time']
         text = text.split(' ')
         let element = document.createElement('div')
-        element.setAttribute('style', 'text-align: center')
+        element.setAttribute('style', 'text-align: left')
         let inpos = document.getElementById('exist')
-        element.innerHTML = text[1] + ' : ' + results[i]['latitude'] + results[i]['longitude']
+        element.innerHTML = i + ' : ' + text[1] + ' : ' + results[i]['latitude'] + results[i]['longitude']
         inpos.appendChild(element)
+    }
+}
+
+// 経路表示
+function markroute(results) {
+    for (let i = 0; i < results.length-1; i++) {
+        L.polyline([
+            [results[i]['latitude'], results[i]['longitude']],
+            [results[i+1]['latitude'], results[i+1]['longitude']]
+        ],{
+            "color": "#FF0000",
+            "weight": 5,
+            "opacity": 0.6
+        }).addTo(mymap)
     }
 }
 
@@ -67,7 +77,6 @@ document.querySelector('input')
         const reader = new FileReader
         reader.onload = (e) => {
             stream.write(e.target.result) // stream.onの処理を行う
-            // console.log(results[0]['time'])
             datadisplay(results)
             // console.log(results.length)
         }
@@ -85,4 +94,4 @@ stream.on('data', function(data) {
 })
 
 // マーカー
-// var marker = L.marker([pointlat, pointlon]).addTo(mymap);
+// var marker = L.marker([pointlat, pointlon]).addTo(mymap)
