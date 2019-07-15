@@ -1,1 +1,8 @@
-#mapid { height: 100vh; width: 120vh;}
+#mapid { 
+    height: 100vh; 
+    width: 120vh;
+}
+#disp {
+    height: vh;
+    width: vh;
+}

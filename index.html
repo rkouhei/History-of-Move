@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>leaflet-tutorial</title>
+        <title>History-of-Move</title>
         <!-- leaflet css -->
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
@@ -19,9 +19,11 @@
     <body>
         <div id="csv" style="display: inline-flex">
             <div id="mapid"></div>
-            <form method="post" action="example.cgi" enctype="multipart/form-data">
+            <!-- <div id="disp" style="display:inline-flex"> -->
+            <div id="disp">
                 <input type="file">
-            </form>
+                <button id="btn" type="button" name="display">表示</button>
+            </div>
         </div>
         <script src="src/js/index.js"></script>
     </body>
