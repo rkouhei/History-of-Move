@@ -20,15 +20,13 @@ function datadisplay(results) {
 
 // ボタンクリック時の動作
 document.getElementById('btn').onclick = function() {
-    if (results.length === 0) {
+    if (results.length === 0) {  // csvファイルが入力されていないとき
         let element = document.createElement('p') // 挿入するタグ
         let inspos = document.getElementById('disp') // 挿入する位置をidで決める
         element.innerHTML = '<div id="exist" style="text-align: center">csvファイルを入力してください</div>'
         inspos.appendChild(element)
-    } else {
+    } else {  // 入力されているとき
         let pos_indx = samepos(results)
-        // console.log(pos_indx);
-        console.log(pos_indx);
         markpos(results, pos_indx)
         markroute(results, pos_indx)
     }
@@ -37,31 +35,25 @@ document.getElementById('btn').onclick = function() {
 // マーカーを打つ
 function markpos(results, pos_indx) {
 
-    
-
     for (let i = 0; i < pos_indx.length; i++) {
-        let idx = pos_indx[i]
-        let nxtidx = i+1!=pos_indx.length ? pos_indx[i+1] : results.length-1
+        let idx = pos_indx[i]  // 現在の位置のインデックス
+        let nxtidx = i+1!=pos_indx.length ? pos_indx[i+1] : results.length-1  // 次の位置のインデックス
 
+        // マーカーを打つ
         L.marker([results[idx]['latitude'], results[idx]['longitude']]).addTo(mymap)
+        
+        // テキストで座標の表示
         let text = results[idx]['time']
         text = text.split(' ')
-        // console.log(Date.parse('2008/5/1 2:00:00'));
-        // let difftime = Date.parse(text) - Date.parse(results[26]['time'])
-        // console.log(Date.parse(text), Date.parse(results[26]['time']));
-        // console.log(Date.toString(Date.parse(text) - Date.parse(results[26]['time'])));
-        // console.log(difftime/1000);
         let element = document.createElement('div')
         element.setAttribute('style', 'text-align: left')
         let inpos = document.getElementById('exist')
         element.innerHTML = i + ' : ' + text[1] + ' : ' + results[idx]['latitude'] + results[idx]['longitude']
         inpos.appendChild(element)
         
-        console.log(idx, nxtidx);
+        // 滞在時間の表示
         if ((idx+1) < nxtidx) {
             let diff_time = (Date.parse(results[nxtidx-1]['time']) - Date.parse(text))/1000
-            // console.log(diff_time);
-            // console.log(diff_time/60);
             let element = document.createElement('div')
             element.setAttribute('style', 'text-align: left')
             let inpos = document.getElementById('exist')
@@ -73,7 +65,7 @@ function markpos(results, pos_indx) {
 
 // 経路表示
 function markroute(results, pos_indx) {
-    if (pos_indx.length === 1) {return}
+    if (pos_indx.length === 1) {return}  // 一箇所の場合は経路は表示できない
     for (let i = 0; i < pos_indx.length-1; i++) {
         let idx = pos_indx[i]
         let nxtidx = pos_indx[i+1]
@@ -91,7 +83,7 @@ function markroute(results, pos_indx) {
 // 同じ場所滞在判定
 function samepos(results) {
     let pos_indx = [0]
-    let threshold = 0.0008
+    let threshold = 0.0008  // 閾値(適当に設定)
     for (let i = 0; i < results.length-1; i++) {
         let diff_lati = Math.abs(results[i]['latitude'] - results[i+1]['latitude'])
         let diff_long = Math.abs(results[i]['longitude'] - results[i+1]['longitude'])
@@ -100,13 +92,12 @@ function samepos(results) {
         }
         pos_indx.push(i+1)
     }
-    // console.log(results,pos_indx);
-    return pos_indx
+    return pos_indx  // 滞在を考慮したインデックス
 }
 
 // マップの読み込み
-let pointlat = 34.2929505
-let pointlon = 134.061257
+let pointlat = 34.2929505  // 香川大学創造工学部の緯度
+let pointlon = 134.061257  // 香川大学創造工学部の経度
 const mymap = L.map('mapid').setView([pointlat, pointlon], 13)
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -123,9 +114,7 @@ document.querySelector('input')
         reader.onload = (e) => {
             results = []
             stream.write(e.target.result) // stream.onの処理を行う
-            // console.log(results);
             datadisplay(results)
-            // console.log(results.length)
         }
         
         if (e.target.files[0]) {
@@ -138,8 +127,4 @@ document.querySelector('input')
 let results = []
 stream.on('data', function(data) {
     results.push(data)
-    // console.log(results);
 })
-
-// マーカー
-// var marker = L.marker([pointlat, pointlon]).addTo(mymap)

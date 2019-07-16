@@ -1,0 +1,8 @@
+{
+    "version": 2,
+    "name": "History-of-Move",
+    "alias": "History-of-Move",
+    "builds": [
+        {"src": "package.json", "use": "@now/static-build"}
+    ]
+}
